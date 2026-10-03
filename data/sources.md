@@ -1,4 +1,4 @@
-# 数据来源登记
+﻿# 数据来源登记
 
 > **抓取日期：2026-10-03**。本文件是 `data/` 下所有目录表的唯一出处。
 
@@ -18,14 +18,14 @@
 | H2 | secondary | DeepSeek / Mixtral 公开模型卡 | 同上，含 MoE 架构的激活参数 |
 | H3 | secondary | Mistral 官方模型卡 | Mixtral-8x7B 结构参数 |
 | H4 | official | Meta Llama 3 官方模型卡 | 结构参数 |
-| H5 | secondary | 曦望官网 · 产品页 | S1 产品定位与技术表述 |
+| H5 | secondary | 目标厂商官网 · 产品页 | S1 产品定位与技术表述 |
 | H6 | secondary / unverified | 公开报道（芯片规格、7nm、64GB、TDP、CUDA 兼容） | S2/S3/REX-S 规格；S3 与 REX-S 的详细参数标 `unverified` |
 | H7 | official | NVIDIA 官方产品规格页 | A100-80G、L40S 规格（竞品对照） |
 | H8 | official | AMD 官方产品规格页 | MI300X 规格（竞品对照） |
 | H9 | official | vLLM 官方仓库 | PagedAttention、量化支持、连续批处理 |
 | H10 | official | TensorRT-LLM 官方仓库 | 量化级别、算子融合、投机解码 |
 | H11 | official | SGLang 官方仓库 | RadixAttention 前缀缓存 |
-| H12 | secondary | 曦望官网 · 技术路线表述 | 「每瓦 Token 吞吐量」「全栈自研推理 GPU」等核心叙事 |
+| H12 | secondary | 目标厂商官网 · 技术路线表述 | 「每瓦 Token 吞吐量」「全栈自研推理 GPU」等核心叙事 |
 
 ## 关键说明：哪些数据不可信，为什么
 
@@ -39,8 +39,8 @@
 3. **竞品数据用 official 级** —— A100/L40S/MI300X 的规格 NVIDIA/AMD 官网均可查，
    但本项目**只做规格并列，不做优劣评价**。
 
-4. **本项目无任何 `official` 级的曦望数据** —— 官网以产品宣传与技术叙事为主，
-   无参数表。这意味着所有涉及曦望的测算都是**基于公开报道的理论推算**，
+4. **本项目无任何 `official` 级的目标加速卡数据** —— 厂商官网以产品宣传与技术叙事为主，
+   无参数表。这意味着所有涉及目标加速卡的测算都是**基于公开报道的理论推算**，
    这一点在 README 与每份输出中显式声明。
 
 ## 与既有作品集的边界

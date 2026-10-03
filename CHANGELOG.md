@@ -1,4 +1,4 @@
-# CHANGELOG
+﻿# CHANGELOG
 
 本文件记录本项目实际发生的变更。只写真实做过的事，不补历史。
 
@@ -65,4 +65,4 @@
 - 电价与 PUE 为占位值
 - MoE 层占比假设（0.25）直接决定 EP/TP 比值，是本模块最敏感参数
 - hidden 尺寸为占位近似（kv_heads × head_dim × 4）
-- 曦望规格多为 unverified，REX-S 单卡显存标「未查到」故判 unknown
+- 目标加速卡规格多为 unverified，REX-S 单卡显存标「未查到」故判 unknown
