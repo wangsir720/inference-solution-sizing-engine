@@ -1,0 +1,25 @@
+{
+  "scenario_id": "video_analytics",
+  "name": "视联网多模态视频结构化推理",
+  "industry": "智慧交通",
+  "deployment": "边缘集群",
+  "workload": {
+    "model_id": "Qwen2.5-14B",
+    "concurrent_sessions": 16,
+    "input_len_tokens": 3000,
+    "output_len_tokens": 200,
+    "p95_latency_ms": 2000,
+    "availability_target": 0.999
+  },
+  "constraints": {
+    "power_budget_kw": 8,
+    "data_residency": "境内",
+    "prefer_inference_dedicated": true
+  },
+  "assumption_refs": [
+    "A-01",
+    "A-02",
+    "A-03",
+    "A-04"
+  ]
+}

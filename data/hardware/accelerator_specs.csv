@@ -1,0 +1,8 @@
+﻿accel_model,vendor,arch,vram_gib,memory_type,memory_bw_gbs,tdp_w,intra_interconnect,fp8_support,fp4_support,source_id,credibility,fetched_at,note
+S1,Sunrise,DSA,16,LPDDR,600,120,PCIe 5.0,True,True,H5,secondary,2026-10-03,云边侧高能效推理核心，对外公开参数有限
+S2,Sunrise,DSA,64,LPDDR,1200,400,PCIe 5.0,True,True,H6,secondary,2026-10-03,7nm 2.5D CoWoS，CUDA 兼容，公开报道口径
+S3,Sunrise,DSA,144,LPDDR,2400,700,专用互联,True,True,H6,unverified,2026-10-03,支持万亿参数全载入 / FP4 FP8，参数以官方发布为准
+REX-S,Sunrise,DSA,-,LPDDR,4800,2800,专用互联,True,True,H6,unverified,2026-10-03,超节点形态，公开资料未查到单卡显存与 TDP，仅互联与功耗上限有报道
+A100-80G,NVIDIA,GPGPU,80,HBM2e,2039,400,NVLink,True,False,H7,official,2026-10-03,竞品对照（公开规格）
+L40S,NVIDIA,GPGPU,48,HBM2,864,350,NVLink,True,False,H7,official,2026-10-03,竞品对照（公开规格）
+MI300X,AMD,GPGPU,192,HBM3,5300,750,Infinity Fabric,True,False,H8,official,2026-10-03,竞品对照（公开规格）

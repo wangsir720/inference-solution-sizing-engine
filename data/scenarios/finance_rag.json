@@ -1,0 +1,20 @@
+{
+  "scenario_id": "finance_rag",
+  "name": "金融机构私有化 RAG 推理",
+  "industry": "金融",
+  "deployment": "私有化一体机",
+  "workload": {
+    "model_id": "Qwen2.5-32B",
+    "concurrent_sessions": 60,
+    "input_len_tokens": 2000,
+    "output_len_tokens": 500,
+    "p95_latency_ms": 4000,
+    "availability_target": 0.9995
+  },
+  "constraints": {
+    "power_budget_kw": 15,
+    "data_residency": "境内",
+    "prefer_inference_dedicated": true
+  },
+  "assumption_refs": ["A-01", "A-02", "A-03", "A-04"]
+}

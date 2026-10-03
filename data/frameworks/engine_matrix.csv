@@ -1,0 +1,4 @@
+﻿engine,version,paged_kv_cache,prefix_reuse,quant_modes,batching,source_id,credibility,fetched_at,note
+vLLM,0.6,True,True,FP8;INT8;AWQ,Continuous,H9,official,2026-10-03,PagedAttention 为其核心显存管理机制
+TensorRT-LLM,0.12,True,True,FP8;INT4;FP4,Inflight,H10,official,2026-10-03,含投机解码与算子融合
+SGLang,0.4,True,True,FP8;INT8,Continuous,H11,official,2026-10-03,RadixAttention 前缀缓存对吞吐口径影响大

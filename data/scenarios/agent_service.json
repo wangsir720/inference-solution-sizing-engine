@@ -1,0 +1,25 @@
+{
+  "scenario_id": "agent_service",
+  "name": "企业级 AI Agent 服务",
+  "industry": "通用",
+  "deployment": "超节点集群",
+  "workload": {
+    "model_id": "DeepSeek-R1-Distill-Qwen-14B",
+    "concurrent_sessions": 200,
+    "input_len_tokens": 6000,
+    "output_len_tokens": 1200,
+    "p95_latency_ms": 8000,
+    "availability_target": 0.999
+  },
+  "constraints": {
+    "power_budget_kw": 40,
+    "data_residency": "境内",
+    "prefer_inference_dedicated": true
+  },
+  "assumption_refs": [
+    "A-01",
+    "A-02",
+    "A-03",
+    "A-04"
+  ]
+}

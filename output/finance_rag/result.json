@@ -1,0 +1,239 @@
+{
+  "scenario": {
+    "scenario_id": "finance_rag",
+    "name": "金融机构私有化 RAG 推理",
+    "industry": "金融",
+    "deployment": "私有化一体机",
+    "workload": {
+      "model_id": "Qwen2.5-32B",
+      "concurrent_sessions": 60,
+      "input_len_tokens": 2000,
+      "output_len_tokens": 500,
+      "p95_latency_ms": 4000,
+      "availability_target": 0.9995
+    },
+    "constraints": {
+      "power_budget_kw": 15,
+      "data_residency": "境内",
+      "prefer_inference_dedicated": true
+    },
+    "assumption_refs": [
+      "A-01",
+      "A-02",
+      "A-03",
+      "A-04"
+    ]
+  },
+  "sizing": {
+    "scenario_id": "finance_rag",
+    "model_id": "Qwen2.5-32B",
+    "accel_model": "S2",
+    "cards": 2,
+    "cards_raw": 1.116,
+    "accel_vram_gib": 64.0,
+    "accel_tdp_w": 400.0,
+    "memory": {
+      "weight_gib": 61.095,
+      "kv_cache_gib": 0.61,
+      "required_gib": 67.876,
+      "kv_share": 0.0099,
+      "trace": "权重 61.09 GiB + KV Cache 0.61 GiB（2500 token × 2(K,V) × 64 层 × 8 kv_head × 128 head_dim × 2 Byte）= 0.61 GiB；×余量系数 1.10 = 67.88 GiB",
+      "assumption_refs": [
+        "A-01"
+      ]
+    },
+    "total_vram_gib": 128.0,
+    "verdict": "supported",
+    "reason": "单卡可用显存 60.80 GiB（总 64.00 × 5% 余量），需求 67.88 GiB，余量 47.0%",
+    "accel_cite": "S2（来源 H6，可信度 secondary）",
+    "model_cite": "Qwen2.5-32B（来源 H1，可信度 secondary）",
+    "assumption_refs": [
+      "A-01",
+      "A-02"
+    ]
+  },
+  "parallel": {
+    "recommended": "tensor_parallel",
+    "efficiency": 0.85,
+    "reason": "模型 Qwen2.5-32B 是稠密模型，每层权重都参与计算，没有专家可切，只能用 TP 按权重矩阵切分",
+    "tradeoff": "代价是**每层需 2 次 all-reduce**，通信量随 TP 度数上升，卡数越多对互联带宽要求越高",
+    "assumption_refs": [
+      "B-02"
+    ]
+  },
+  "comm": {
+    "available": true,
+    "is_moe": false,
+    "hidden_approx": 4096.0,
+    "hidden_note": "按 kv_heads × head_dim × 4 近似，GQA 分组倍数未登记（占位）",
+    "tp_gib_per_step": 58.5938,
+    "ep_gib_per_step": 0.0,
+    "ep_over_tp": null,
+    "trace": "TP: 2(all-reduce/层) × 64 层 × 120000 token × 4096 hidden × 2 Byte × (2-1)/2 = 58.5938 GiB/步；非 MoE 模型，EP 不适用",
+    "caveat": "hidden 尺寸为占位近似（kv_heads × head_dim × 4），对 MoE 与稠密模型的 GQA 分组倍数可能不同。结论只用于**同一模型内** TP 与 EP 的相对比较，不做跨模型比较。",
+    "assumption_refs": [
+      "B-02"
+    ]
+  },
+  "token_per_watt": {
+    "available": true,
+    "accel_model": "S2",
+    "cards": 2,
+    "single_card_tps": 281.14,
+    "parallel_efficiency": 0.85,
+    "optimization_factor": 1.8,
+    "optimizations_applied": [
+      "投机解码"
+    ],
+    "utilization": 0.6,
+    "total_tps": 516.18,
+    "system_tdp_w": 920.0,
+    "token_per_watt": 0.56106,
+    "trace": "单卡 281.1 token/s（按 70 亿参数 bf16 单卡 60 token/s 线性折算：60 × 32.8B ÷ 7.0B = 281.1 token/s（**占位值，须用目标卡实测替换**））× 2 卡 × 并行效率 0.85 × 优化系数 1.8（投机解码） × 利用率 0.60 = 整机 516.2 token/s；整机功耗 = 400 W × 2 卡 × 1.15 机箱开销 = 920 W；**每瓦 Token 吞吐 = 516.2 / 920 = 0.5611 token/s/W**",
+    "caveats": [
+      "单卡 TPS 基线为占位值，非实测",
+      "优化系数不叠加，取最大值 —— 多项优化作用于不同瓶颈，相乘会严重高估",
+      "不含 TTFT 影响：本指标只计 decode 吞吐，首 token 延迟需单独评估"
+    ],
+    "assumption_refs": [
+      "B-01",
+      "B-02",
+      "B-03"
+    ]
+  },
+  "tco": {
+    "cards": 2,
+    "system_power_w": 920.0,
+    "utilization": 0.6,
+    "pue": 1.3,
+    "power_price": 0.8,
+    "years": 3,
+    "lines": [
+      {
+        "category": "运营",
+        "item": "电费（IT 功耗）",
+        "qty": 4835.5,
+        "unit": "kWh/年",
+        "unit_price": 0.8,
+        "unit_price_source": "占位值，须按项目所在地电价替换",
+        "annual_cny": 3868.42,
+        "derivation": "整机 920 W × 8760 h/年 × 利用率 0.60 ÷ 1000 = 4835.5 kWh/年；× 0.80 元/度 = 3868.42 元/年"
+      },
+      {
+        "category": "运营",
+        "item": "电费（PUE 附加：制冷等）",
+        "qty": 4835.5,
+        "unit": "kWh/年",
+        "unit_price": 0.24,
+        "unit_price_source": "PUE 1.3",
+        "annual_cny": 1160.52,
+        "derivation": "IT 电费 × (PUE 1.3 − 1) = 1160.52 元/年"
+      }
+    ],
+    "unpriced_items": [
+      {
+        "item": "加速卡与整机硬件采购",
+        "reason": "厂商未公开统一售价，属商业信息；本项目不编造单价",
+        "action": "取得正式报价后传入 hardware_price 参数重算"
+      }
+    ],
+    "annual_power_cost_cny": 5028.94,
+    "power_share_of_known": 1.0,
+    "annual_known_cny": 5028.94,
+    "three_year_known_cny": 15086.82,
+    "per_million_tokens": {
+      "token_per_watt": 0.56106,
+      "kwh_per_million_tokens": 1782.341,
+      "cost_per_million_tokens_cny": 1853.6342,
+      "trace": "每瓦 0.5611 token/s → 每百万 token 需 1782.3 W·h；× PUE 1.3 × 电价 0.80 元/度 = 1853.6342 元/百万 token",
+      "note": "仅电费，不含硬件折旧与运维人力",
+      "assumption_refs": [
+        "B-01",
+        "C-01"
+      ]
+    },
+    "trace": "年电费 = 920 W × 8760 h × 0.60 利用率 ÷ 1000 = 4835.5 kWh；× 0.80 元 = 3868.42 元/年；PUE 1.3 附加 1160.52 元/年；已计入部分合计 5028.94 元/年 → 三年 15086.82 元",
+    "completeness_note": "**合计不完整**：加速卡采购价未公开，未计入。对客户报 TCO 时必须补上硬件价，否则这个数字没有决策价值。",
+    "assumption_refs": [
+      "C-01",
+      "C-02",
+      "B-01"
+    ]
+  },
+  "form": {
+    "chip": {
+      "model": "S2",
+      "arch": "DSA",
+      "tdp_w": 400.0,
+      "vram_gib": 64,
+      "memory_type": "LPDDR",
+      "memory_bw_gbs": 1200,
+      "slot_support": 8,
+      "intra_interconnect": "专用互联"
+    },
+    "board": {
+      "model": "S2-加速卡",
+      "quantity": 2,
+      "slots_used": 1,
+      "tdp_w": 400.0,
+      "vram_gib": 64,
+      "interconnect": "专用互联",
+      "form_factor": "双宽全高",
+      "power_connector": "3000W"
+    },
+    "server": {
+      "model": "4U 机架服务器",
+      "slots_available": 4,
+      "fan_modules": 2.0,
+      "fan_capacity_w": 500,
+      "total_tdp_w": 800.0,
+      "chassis_overhead_w": 200,
+      "interconnect_topology": "全互联"
+    },
+    "appliance": {
+      "model": "4U 一体机",
+      "power_budget_w": 1000.0,
+      "cooling_type": "风冷",
+      "form_factor": "4U 机架",
+      "rack_units": 4,
+      "networking": "双 200G",
+      "target_scenarios": "金融机构私有化 RAG 推理"
+    },
+    "target_model_required_gib": 67.876,
+    "strategy_required_interconnect": "专用互联"
+  },
+  "validation": {
+    "issues": [],
+    "issue_count": 0,
+    "p0_count": 0,
+    "rules_checked": 5,
+    "field_completeness": {
+      "per_layer": {
+        "chip": {
+          "total": 5,
+          "filled": 5,
+          "missing": []
+        },
+        "board": {
+          "total": 6,
+          "filled": 6,
+          "missing": []
+        },
+        "server": {
+          "total": 6,
+          "filled": 6,
+          "missing": []
+        },
+        "appliance": {
+          "total": 4,
+          "filled": 4,
+          "missing": []
+        }
+      },
+      "total_fields": 21,
+      "filled_fields": 21,
+      "rate": 1.0
+    },
+    "note": "只做参数一致性校验，不做振动/散热的工程设计（见 assumptions.md D 节）"
+  }
+}
