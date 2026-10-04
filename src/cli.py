@@ -87,7 +87,7 @@ def _form_from_sizing(base: dict, z: dict, scenario: dict) -> dict:
     """把测算结果回填到四层形态规格。
 
     这一步很关键：**规格书里的卡数与功耗必须来自测算结果**，
-    否则规格书与方案书会自相矛盾 —— 那正是 JD 职责 5 要防的问题。
+    否则规格书与方案书会自相矛盾 —— 那正是四层形态一致性要防的问题。
     """
     form = {k: dict(v) if isinstance(v, dict) else v for k, v in base.items()}
     cards = z.get("cards")
